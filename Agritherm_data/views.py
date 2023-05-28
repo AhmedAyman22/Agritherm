@@ -9,7 +9,7 @@ from .models import *
 class cityView(APIView):
     def get(self, request):
         allCities = City.objects.all().values()
-        return Response({"Cities List:":allCities})
+        return Response({allCities})
     
     def post(self, request):
         City.objects.create(
@@ -20,4 +20,4 @@ class cityView(APIView):
                             )
         
         city = City.object.all().filter(id=request.data["id"]).values()
-        return Response({"City:":city})
+        return Response({"Message":"City Entry", "City:":city})
