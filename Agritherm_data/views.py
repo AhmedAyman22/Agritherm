@@ -20,4 +20,4 @@ class cityView(APIView):
                             )
         
         city = City.object.all().filter(id=request.data["id"]).values()
-        return Response({"Message":"City Entry", "City:":city})
+        return Response({"City:":city})

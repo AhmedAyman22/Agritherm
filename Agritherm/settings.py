@@ -8,7 +8,7 @@ SECRET_KEY = 'django-insecure-4^1id#n^(46@2g&6d(s0n(1n*y=ms5ont&ag2qy+%^%m(8!3&j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['ahmayman.pythonanywhere.com']
+ALLOWED_HOSTS = ['ahmayman.pythonanywhere.com','127.0.0.1']
 
 
 # Application definition
@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'Agritherm_data',
+
 ]
 
 MIDDLEWARE = [
