@@ -9,7 +9,7 @@ from .models import *
 class cityView(APIView):
     def get(self, request):
         allCities = City.objects.all().values()
-        return Response({allCities})
+        return Response({json.dump(allCities, fp, indent=4, separators=(",", ": "), sort_keys=True)})
     
     def post(self, request):
         City.objects.create(
