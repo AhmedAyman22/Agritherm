@@ -1,0 +1,568 @@
+[
+  {
+      "crop": "Wheat",
+      "pests": [
+          "Wheat stem sawfly"
+      ],
+      "temperature_range": "10-25"
+  },
+  {
+      "crop": "Barley",
+      "pests": [
+          "Aphids",
+          "Armyworms"
+      ],
+      "temperature_range": "15-25"
+  },
+  {
+      "crop": "Corn",
+      "pests": [
+          "Corn earworm",
+          "Corn rootworm"
+      ],
+      "temperature_range": "25-35"
+  },
+  {
+      "crop": "Rice",
+      "pests": [
+          "Rice stem borers",
+          "Rice leaf folders"
+      ],
+      "temperature_range": "20-35"
+  },
+  {
+      "crop": "Sorghum",
+      "pests": [
+          "Sorghum midge",
+          "Sorghum webworm"
+      ],
+      "temperature_range": "25-35"
+  },
+  {
+      "crop": "Chickpea",
+      "pests": [
+          "Chickpea pod borer"
+      ],
+      "temperature_range": "20-35"
+  },
+  {
+      "crop": "Fava Bean",
+      "pests": [
+          "Aphids",
+          "Fava bean weevil"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Lentil",
+      "pests": [
+          "Lentil weevil",
+          "Lentil aphid"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Pea",
+      "pests": [
+          "Pea aphids",
+          "Pea leaf weevil"
+      ],
+      "temperature_range": "15-25"
+  },
+  {
+      "crop": "Garlic",
+      "pests": [
+          "Onion thrips",
+          "Garlic bulb mites"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Onion",
+      "pests": [
+          "Onion maggots",
+          "Onion thrips"
+      ],
+      "temperature_range": "15-25"
+  },
+  {
+      "crop": "Potato",
+      "pests": [
+          "Colorado potato beetle",
+          "Potato tuberworm"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Tomato",
+      "pests": [
+          "Tomato hornworm",
+          "Whiteflies"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Cucumber",
+      "pests": [
+          "Cucumber beetles",
+          "Cucumber mosaic virus"
+      ],
+      "temperature_range": "25-30"
+  },
+  {
+      "crop": "Eggplant",
+      "pests": [
+          "Eggplant lace bug",
+          "Flea beetles"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Zucchini",
+      "pests": [
+          "Squash bugs",
+          "Zucchini vine borer"
+      ],
+      "temperature_range": "25-30"
+  },
+  {
+      "crop": "Pepper",
+      "pests": [
+          "Aphids",
+          "Pepper weevil"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Carrot",
+      "pests": [
+          "Carrot rust fly",
+          "Carrot weevil"
+      ],
+      "temperature_range": "20-25"
+  },
+  {
+      "crop": "Beetroot",
+      "pests": [
+          "Leafminers",
+          "Aphids"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Lettuce",
+      "pests": [
+          "Cutworms",
+          "Aphids"
+      ],
+      "temperature_range": "15-25"
+  },
+  {
+      "crop": "Spinach",
+      "pests": [
+          "Leafminers",
+          "Aphids"
+      ],
+      "temperature_range": "15-25"
+  },
+  {
+      "crop": "Cabbage",
+      "pests": [
+          "Cabbage worms",
+          "Cabbage loopers"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Broccoli",
+      "pests": [
+          "Cabbage worms",
+          "Diamondback moth"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Cauliflower",
+      "pests": [
+          "Cabbage worms",
+          "Aphids"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Green Bean",
+      "pests": [
+          "Mexican bean beetle",
+          "Bean weevil"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Soybean",
+      "pests": [
+          "Soybean aphids",
+          "Bean leaf beetles"
+      ],
+      "temperature_range": "25-35"
+  },
+  {
+      "crop": "Orange",
+      "pests": [
+          "Citrus leafminer",
+          "Asian citrus psyllid"
+      ],
+      "temperature_range": "25-35"
+  },
+  {
+      "crop": "Lime",
+      "pests": [
+          "Citrus leafminer",
+          "Asian citrus psyllid"
+      ],
+      "temperature_range": "25-35"
+  },
+  {
+      "crop": "Banana",
+      "pests": [
+          "Banana weevil",
+          "Banana aphid"
+      ],
+      "temperature_range": "25-35"
+  },
+  {
+      "crop": "Mango",
+      "pests": [
+          "Mango fruit fly",
+          "Mango shoot borer"
+      ],
+      "temperature_range": "25-35"
+  },
+  {
+      "crop": "Pomegranate",
+      "pests": [
+          "Pomegranate butterfly",
+          "Pomegranate mealybug"
+      ],
+      "temperature_range": "25-35"
+  },
+  {
+      "crop": "Grape",
+      "pests": [
+          "Grape phylloxera",
+          "Grape berry moth"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Olive",
+      "pests": [
+          "Olive fruit fly",
+          "Olive scale"
+      ],
+      "temperature_range": "20-35"
+  },
+  {
+      "crop": "Almond",
+      "pests": [
+          "Navel orangeworm",
+          "Almond moth"
+      ],
+      "temperature_range": "20-35"
+  },
+  {
+      "crop": "Pistachio",
+      "pests": [
+          "Navel orangeworm",
+          "Pistachio twig borer"
+      ],
+      "temperature_range": "25-35"
+  },
+  {
+      "crop": "Walnut",
+      "pests": [
+          "Walnut husk fly",
+          "Walnut aphid"
+      ],
+      "temperature_range": "20-35"
+  },
+  {
+      "crop": "Hazelnut",
+      "pests": [
+          "Filbertworm",
+          "Hazelnut aphid"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Apple",
+      "pests": [
+          "Codling moth",
+          "Apple maggot"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Apricot",
+      "pests": [
+          "Apricot moth",
+          "Apricot lace bug"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Peach",
+      "pests": [
+          "Peach tree borer",
+          "Peach leaf curl aphid"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Plum",
+      "pests": [
+          "Plum curculio",
+          "Black knot fungus"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Cherry",
+      "pests": [
+          "Cherry fruit fly",
+          "Cherry leaf spot"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Grapefruit",
+      "pests": [
+          "Citrus rust mite",
+          "Grapefruit seed weevil"
+      ],
+      "temperature_range": "25-35"
+  },
+  {
+      "crop": "Lemon",
+      "pests": [
+          "Lemon tree borer",
+          "Citrus leafminer"
+      ],
+      "temperature_range": "25-35"
+  },
+  {
+      "crop": "Date Palm",
+      "pests": [
+          "Date palm beetle",
+          "Red palm weevil"
+      ],
+      "temperature_range": "25-35"
+  },
+  {
+      "crop": "Fig",
+      "pests": [
+          "Fig rust mite",
+          "Fig wax scale"
+      ],
+      "temperature_range": "25-35"
+  },
+  {
+      "crop": "Oregano",
+      "pests": [
+          "Aphids",
+          "Oregano spider mite"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Sage",
+      "pests": [
+          "Sage leafhopper",
+          "Sage gall midge"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Thyme",
+      "pests": [
+          "Thyme spider mite",
+          "Thyme leaf beetle"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Rosemary",
+      "pests": [
+          "Rosemary leaf beetle",
+          "Rosemary leafhopper"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Cumin",
+      "pests": [
+          "Cumin seed borer",
+          "Cumin aphid"
+      ],
+      "temperature_range": "25-35"
+  },
+  {
+      "crop": "Coriander",
+      "pests": [
+          "Coriander aphids",
+          "Coriander leaf spot"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Anise",
+      "pests": [
+          "Anise aphids",
+          "Anise lace bug"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Fennel",
+      "pests": [
+          "Fennel weevil",
+          "Fennel aphid"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Mint",
+      "pests": [
+          "Mint flea beetle",
+          "Mint root borer"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Basil",
+      "pests": [
+          "Aphids",
+          "Basil downy mildew"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Parsley",
+      "pests": [
+          "Parsleyworm",
+          "Parsley leafminer"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Dill",
+      "pests": [
+          "Dill caterpillar",
+          "Dill aphid"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Celery",
+      "pests": [
+          "Celery leaf tier",
+          "Celery mosaic virus"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Artichoke",
+      "pests": [
+          "Artichoke plume moth",
+          "Artichoke aphid"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Asparagus",
+      "pests": [
+          "Asparagus beetle",
+          "Asparagus miner"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Okra",
+      "pests": [
+          "Okra bollworm",
+          "Okra leafhopper"
+      ],
+      "temperature_range": "25-35"
+  },
+  {
+      "crop": "Watermelon",
+      "pests": [
+          "Watermelon aphid",
+          "Watermelon fruit fly"
+      ],
+      "temperature_range": "25-35"
+  },
+  {
+      "crop": "Melon",
+      "pests": [
+          "Melon aphid",
+          "Melon fruit fly"
+      ],
+      "temperature_range": "25-35"
+  },
+  {
+      "crop": "Strawberry",
+      "pests": [
+          "Strawberry aphids",
+          "Strawberry root weevil"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Raspberry",
+      "pests": [
+          "Raspberry cane borer",
+          "Raspberry fruitworm"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Blackberry",
+      "pests": [
+          "Blackberry psyllid",
+          "Blackberry cane borer"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Gardenia",
+      "pests": [
+          "Spider mites",
+          "Whiteflies"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Jasmine",
+      "pests": [
+          "Jasmine budworm",
+          "Jasmine whitefly"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Lavender",
+      "pests": [
+          "Lavender leafhopper",
+          "Lavender moth"
+      ],
+      "temperature_range": "20-30"
+  },
+  {
+      "crop": "Saffron",
+      "pests": [
+          "Saffron aphid",
+          "Saffron corm mite"
+      ],
+      "temperature_range": "20-30"
+  }
+]
