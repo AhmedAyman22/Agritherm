@@ -1,0 +1,30 @@
+{
+    "intents": [
+      {
+        "tag": "greeting",
+        "patterns": ["Hi", "Hello", "Hey"],
+        "responses": ["Hello! How can I assist you today?", "Hi there! How can I help you?"]
+      },
+      {
+        "tag": "goodbye",
+        "patterns": ["Goodbye", "Bye", "See you later"],
+        "responses": ["Goodbye! Have a great day!", "Take care! See you soon."]
+      },
+      {
+        "tag": "thanks",
+        "patterns": ["Thank you", "Thanks a lot", "Appreciate it"],
+        "responses": ["You're welcome!", "Glad I could assist.", "No problem!"]
+      },
+      {
+        "tag": "help",
+        "patterns": ["Help me", "I need assistance", "Can you help?", "What can you do?", "What is your purpose?", "How can you assist?"],
+        "responses": ["I can help you with several things. I can generate pests and temperature range information for different crops.Additionally, I can provide current weather updates and generate alerts for heatwaves. How can I assist you today?"]
+      },
+      {
+        "tag": "unknown",
+        "patterns": ["", "I don't know", "Not sure"],
+        "responses": ["I'm sorry, I didn't understand. Could you please rephrase?", "I'm sorry, I couldn't grasp that. Can you provide more information?"]
+      }
+    ]
+  }
+  
