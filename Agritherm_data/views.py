@@ -1,10 +1,18 @@
+import json
+import re
+import random
+import joblib
+import os
+from .models import *
+import tensorflow as tf
+import numpy as np
+from datetime import datetime, timedelta
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import *
-import json
-import re
-import datetime
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from sklearn.preprocessing import LabelEncoder
 from sklearn.svm import SVC
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -14,7 +22,6 @@ from django.http import HttpResponse
 
 
 # Create your views here.
-
 
 class cityView(APIView):
     def get(self, request):
@@ -34,137 +41,164 @@ class cityView(APIView):
 
 
 class ChatBotView(APIView):
-    def get_chatbot_response(self, user_input):
-        # Load the data from JSON files
-        with open('Z:\\Agritherm\\Agritherm\\Agritherm_data\\temp_data.json') as file:
-            temp_data = json.load(file)
+    def handler(self, user_input):
+        global data1,temperature_data,pests_data,cities,dates,temperature_model,pests_model,loaded_model
+        with open("Z:\\Agritherm\\Agritherm\\Agritherm_data\\temp_data.json") as file:
+            temperature_data = json.load(file)
 
-        with open('Z:\\Agritherm\\Agritherm\\Agritherm_data\\pests_data.json') as file:
+        # Load the pests data from the JSON file
+        with open("Z:\\Agritherm\\Agritherm\\Agritherm_data\\pests_data.json") as file:
             pests_data = json.load(file)
-        with open('Z:\\Agritherm\\Agritherm\\Agritherm_data\\greetings_data.json') as file:
-            greetings_data = json.load(file)
+
+        # Load data from the third JSON file
+        with open("Z:\\Agritherm\\Agritherm\\Agritherm_data\\data1.json") as file:
+            data1 = json.load(file)    
+
+        # Extract cities and dates from the temperature data
+        cities = list(temperature_data.keys())
+        dates = list(set([entry['date'] for city_data in temperature_data.values() for entry in city_data['data']]))
+
+
+        # Load the trained models
+        temperature_model = tf.keras.models.load_model("Z:\\Agritherm\\Agritherm\\Agritherm_data\\temperature_model.h5")
+        pests_model = tf.keras.models.load_model("Z:\\Agritherm\\Agritherm\\Agritherm_data\\pests_model.h5")
+        loaded_model = joblib.load('Z:\\Agritherm\\Agritherm\\Agritherm_data\\Yield_Model.pkl')
 
 
 
-        # Preprocess the data
-        documents = []
-        tags = []
-        responses = []
+    def generate_response(self, user_input):
+        temperature_range_response = ""
+        pests_response = ""
+        temperature_response = ""
+        crop_response = ""
+        intents_response=None
 
-        # Process temp_data
-        for location, data in temp_data.items():
-            for item in data['data']:
-                date = item.get('date', str(datetime.date.today()))
-                temperature = item['temperatures']
-                heatwave = item['heatwave']
-                documents.append(f"{location} {date}")
-                tags.append('temperature')
+        # Check if user input asks for temperature range
+        if "temperature range" in user_input.lower():
+            for crop in crops:
+                if crop.lower() in user_input.lower():
+                    temperature_range_response += random.choice([
+        f"The recommended temperature range for {crop} is {temperature_ranges[crop]}.",
+        f"Optimal temperature range for {crop} growth is {temperature_ranges[crop]}.",
+        f"{crop} thrives in temperatures ranging from {temperature_ranges[crop]}.",
+        f"{crop} requires a temperature range of {temperature_ranges[crop]} for optimal development."
+    ])
 
+        # Check if user input asks for pests
+        if "pests" in user_input.lower():
+            for crop in crops:
+                if crop.lower() in user_input.lower():
+                    pests_response += random.choice([
+        f"Common pests that affect {crop} include {', '.join(pests[crop])}.",
+        f"{crop} is prone to infestations by pests such as {', '.join(pests[crop])}.",
+        f"Ensure proper pest management for {crop} to prevent damage from pests like {', '.join(pests[crop])}.",
+        f"Protect your {crop} from common pests like {', '.join(pests[crop])} through effective pest control measures."
+    ])
+        data_arr = []            
+        if 'yield' in user_input.lower() or 'crops' in user_input.lower() or 'yields' in user_input.lower() or 'crop' in user_input.lower():
+            print("Sure! Please provide the following information for crop prediction:\n 1. Yield (hg/ha)\n 2. Average rainfall (mm per year)\n 3. Pesticides (in tonnes)\n 4. Average temperature (in °C)\n")
+            hg_ha = eval(input('hg/ha = '))
+            avg_rain = eval(input('Average Rain = '))
+            pests_tonne = float(input('Pests Tone = '))
+            avg_temp = float(input('Average temp = '))
 
-                suitable_crops = []
-                for crop_item in pests_data:
-                    crop = crop_item['crop']
-                    temp_range = crop_item['temperature_range']
-                    if temperature >= int(temp_range.split('-')[0]) and temperature <= int(temp_range.split('-')[1]):
-                        suitable_crops.append(crop)
-
-                if heatwave == "True":
-                    response = f"The temperature in {location} on {date} is {round(temperature,2)}°C. There is a Heatwave."
-                else:
-                    response = f"The temperature in {location} on {date} is {round(temperature,2)}°C. There is no Heatwave."
-
-                if suitable_crops:
-                    crop_list = ', '.join(suitable_crops)
-                    response += f"\nSuitable crops for this temperature range: {crop_list.split(',')[0:5]}."
-
-                responses.append(response)
-
-        # Process pests_data
-        for item in pests_data:
-            crop = item['crop']
-            pests = item['pests']
-            temp_range = item['temperature_range']
-            documents.append(f"{crop} {pests}")
-            tags.append('pests')
-            response = f"For {crop}, beware of {', '.join(pests)} and The optimal temperature range for {crop} is {temp_range}°C."
-            responses.append(response)
-
-        # Process greetings_data
-        if 'intents' in greetings_data:
-            for intent in greetings_data['intents']:
-                patterns = intent['patterns']
-                responses.extend(intent['responses'])
-                for pattern in patterns:
-                    documents.append(pattern.lower())
-                    tags.append(intent['tag'])
-        else:
-            print("'intents' key does not exist in greetings_data dictionary.")
-
-        # Create TF-IDF vectors
-        vectorizer = TfidfVectorizer()
-        X = vectorizer.fit_transform(documents)
-
-        # Create SVM model
-        svm_model = SVC(kernel='linear')
-        svm_model.fit(X, tags)
-
-        # Chatbot interaction
-        def get_response(user_input):
-            user_input = str(user_input).lower()
-            input_vector = vectorizer.transform([user_input])
-            similarities = cosine_similarity(input_vector, X)
-            most_similar_index = similarities.argmax()
-            tag = svm_model.predict(input_vector)[0]
-            if similarities[0, most_similar_index] > 0.5:
-                return responses[most_similar_index]
-            else:
-                for intent in greetings_data['intents']:
-                    if intent['tag'] == tag:
-                        return intent['responses'][0]
-            return greetings_data['intents'][-1]['responses'][0]  # Default response
-        def get_input(user_input):
-            prompt = user_input
-            return prompt
-        # Test the chatbot
-        def prompt_formatting(user_input):
-            user_input = str(user_input).lower()
-            if user_input in ['exit', 'quit']:
-                exit()
-
-    # Check if the user input contains a date in the format "YYYY-MM-DD"
-            matches = re.search(r"\d{4}-\d{2}-\d{2}", user_input)
-            if not matches:
-                today = datetime.date.today()
-                yesterday = today - datetime.timedelta(days=1)
-                tomorrow = today + datetime.timedelta(days=1)
-
-                if 'yesterday' in user_input:
-                    user_input = user_input.replace('yesterday', str(yesterday))
-                elif 'tomorrow' in user_input:
-                    user_input = user_input.replace('tomorrow', str(tomorrow))
-                else:
-                    user_input += f" {today}"
-
-            return user_input  # Return the formatted user input
-
+            data_arr = [[hg_ha, avg_rain, pests_tonne, avg_temp]]
+            # Make predictions using the loaded model
+            prediction = loaded_model.predict(data_arr)
+            # Format the response with the crop prediction
+            crop_response = f"The predicted crop based on the given inputs is {prediction}."
         
-        user_input = get_input(user_input)
-        user_input = prompt_formatting(user_input)
-        response = get_response(user_input)
+        intents = data1["intents"]   
+        for intent in intents:
+            patterns = intent["patterns"]
+            responses = intent["responses"]
+            if any(pattern.lower() in user_input.lower() for pattern in patterns):
+                intents_response = random.choice(responses)  # Select a random response
+                break
+
+        else:
+            intents_response = "I'm sorry, I didn't understand. Could you please rephrase?"
+                
+        # Extract city and date from user input
+        city = None
+        date = None
+        for c in cities:
+            if c.lower() in user_input.lower():
+                city = c
+                break
+
+        for d in dates:
+            if d in user_input:
+                date = d
+                break
+        else:
+            #Check if date keywords are mentioned
+            today = datetime.now().strftime("%Y-%m-%d")
+            yesterday = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
+            tomorrow = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
+
+            if "yesterday" in user_input.lower():
+                date = yesterday
+            elif "tomorrow" in user_input.lower():
+                date = tomorrow
+
+            # Set the default date to today if not provided
+            if not date:
+                date = today
+
+        # Generate response based on city and date
+        if city and date:
+            city_data = temperature_data[city]['data']
+            for entry in city_data:
+                if entry['date'] == date:
+                    temperature = int(entry['temperatures'])
+                    heatwave = label_mapping[entry['heatwave']]
+                    temperature_prediction = temperature_model.predict(np.array([[temperature]]))
+                    if temperature_prediction[0][0] >= 0.5:
+                        if heatwave:
+                            temperature_response = random.choice([
+        f"{city} is currently experiencing a heatwave on {date} with a temperature of {temperature}°C.",
+        f"The weather in {city} on {date} is {temperature}°C, and a heatwave is in effect.",
+        f"A heatwave is ongoing in {city} on {date} with a temperature of {temperature}°C.",
+        f"{city} is facing high temperatures on {date} with a heatwave prevailing at {temperature}°C.",
+        f"On {date}, {city} is under a heatwave alert with temperatures reaching {temperature}°C."
+    ])
+                        else:
+                            temperature_response = random.choice([
+        f"{city} is experiencing normal weather conditions on {date} with a temperature of {temperature}°C.",
+        f"The weather in {city} on {date} is {temperature}°C, and there is no heatwave.",
+        f"On {date}, {city} is enjoying pleasant temperatures without any heatwave, measuring {temperature}°C.",
+        f"{city} is having a moderate climate on {date} with temperatures around {temperature}°C, and no heatwave is expected.",
+        f"No heatwave conditions are anticipated in {city} on {date} with a temperature of {temperature}°C."
+    ])
+                    break
+            else:
+                temperature_response = f"Data not available for {city} on {date}."
+
+        # Combine temperature range , pests , temperature , yield responses 
+        response = ""
+        if pests_response:
+            response += pests_response
+        if temperature_range_response:
+            response += temperature_range_response
+        if temperature_response:
+            response += temperature_response
+        if crop_response:
+            response += crop_response
+        if response == "" and intents_response is not None:  
+            response = intents_response    
+
         return response
     
     def post(self, request):
-        
-        prompt_text = request.data.get("entry")
-        response_text = self.get_chatbot_response(prompt_text) # Extract the prompt text from the request data
-        prompt = Prompt.objects.create(prompt=prompt_text)  # Create a new Prompt instance
-
-        # Call the chatbot function
-
-        response = Response.objects.create(response=response_text)  # Create a new Response instance
-        data = {"response": response_text}
-        
-        return HttpResponse(f"{response_text}", content_type="application/json")  # Return a Response object with the response text
+        prompt_text = request.data.get("entry") # Extract the prompt text from the request data
+        self.handler(prompt_text) 
+        response_text = self.generate_response(prompt_text)
+        #prompt = Prompt.objects.create(prompt=prompt_text)  # Create a new Prompt instance
+        #response = Response.objects.create(response=response_text)  # Create a new Response instance
+        response_data = {"response": response_text}
+        json_response = json.dumps(response_data)
+        return HttpResponse(json_response, content_type="application/json")  # Return a Response object with the response text
         
     def get(self, request):
         # Handle GET requests if required
