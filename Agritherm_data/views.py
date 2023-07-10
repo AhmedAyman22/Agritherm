@@ -218,13 +218,22 @@ class ChatBotView(APIView):
 
     
     def post(self, request):
-        crops_syn = ['crop', 'crops', 'plant', 'plants']
+        crops_syn = ['crop', 'crops', 'plant', 'plants', 'predict suitable crops']
+        crops_flag = False
+        crops_message = '''I understand that you want me to predict suitable crops to be planted, to do this please give me the following information in the same order!
+        \n 1. Yield in (hg/ha)\n 2. Average rainfall in (mm per year)\n 3. Pesticides in (tonnes)\n 4. Average temperature in (°C)\n'''
+        
+        
         prompt_text = request.data.get("entry") # Extract the prompt text from the request data
+        split_text = prompt_text.lower().split()
         self.handler(prompt_text)
-        if prompt_text.lower() in crops_syn:
-            return HttpResponse('''I understand that you want me to predict suitable crops to be planted, to do this please give me the following information in the same order!
-            \n 1. Yield in (hg/ha)\n 2. Average rainfall in (mm per year)\n 3. Pesticides in (tonnes)\n 4. Average temperature in (°C)\n''', content_type="application/json")
-        if 'yield' in prompt_text.lower():
+        
+        for i in range(len(split_text)):
+            if split_text[i] in crops_syn:
+                crops_flag = True
+        if crops_flag:
+            return HttpResponse(crops_message, content_type="application/json")
+        elif 'yield' in prompt_text.lower():
             values = self.extract_values(prompt_text)
             hg_ha = values[0]
             avg_rain = values[1]
@@ -248,4 +257,3 @@ class ChatBotView(APIView):
     def get(self, request):
         # Handle GET requests if required
         pass
-
