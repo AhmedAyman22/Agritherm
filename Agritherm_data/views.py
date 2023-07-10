@@ -75,6 +75,10 @@ class ChatBotView(APIView):
         crop_response = ""
         intents_response=None
 
+        crops = [item['crop'] for item in pests_data]
+        pests = {item['crop']: item['pests'] for item in pests_data}
+        temperature_ranges = {item['crop']: item['temperature_range'] for item in pests_data}
+
         # Check if user input asks for temperature range
         if "temperature range" in user_input.lower():
             for crop in crops:
@@ -96,8 +100,8 @@ class ChatBotView(APIView):
         f"Ensure proper pest management for {crop} to prevent damage from pests like {', '.join(pests[crop])}.",
         f"Protect your {crop} from common pests like {', '.join(pests[crop])} through effective pest control measures."
     ])
-        
-        intents = data1["intents"]   
+
+        intents = data1["intents"]
         for intent in intents:
             patterns = intent["patterns"]
             responses = intent["responses"]
@@ -107,7 +111,7 @@ class ChatBotView(APIView):
 
         else:
             intents_response = "I'm sorry, I didn't understand. Could you please rephrase?"
-                
+
         # Extract city and date from user input
         city = None
         date = None
@@ -176,7 +180,7 @@ class ChatBotView(APIView):
             response += crop_response
         if response == "" and intents_response is not None:
             response = intents_response
-            
+
         return response
     def crop_predictor(self, hg_ha, avg_rain, pests_tonne, avg_temp):
         data_arr = []
