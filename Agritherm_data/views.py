@@ -222,7 +222,7 @@ class ChatBotView(APIView):
         prompt_text = request.data.get("entry") # Extract the prompt text from the request data
         self.handler(prompt_text)
         if prompt_text.lower() in crops_syn:
-            return HttpResponse('''I understand that you want me to predict suitable crops to be planted, to do this please give me the following information in the same format!
+            return HttpResponse('''I understand that you want me to predict suitable crops to be planted, to do this please give me the following information in the same order!
             \n 1. Yield in (hg/ha)\n 2. Average rainfall in (mm per year)\n 3. Pesticides in (tonnes)\n 4. Average temperature in (°C)\n''', content_type="application/json")
         if 'yield' in prompt_text.lower():
             values = self.extract_values(prompt_text)
