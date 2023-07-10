@@ -57,7 +57,8 @@ class ChatBotView(APIView):
         # Extract cities and dates from the temperature data
         cities = list(temperature_data.keys())
         dates = list(set([entry['date'] for city_data in temperature_data.values() for entry in city_data['data']]))
-
+        # Create a mapping of heatwave labels to binary values
+        label_mapping = {"False": 0, "True": 1}
 
         # Load the trained models
         temperature_model = tf.keras.models.load_model("Z:\\Agritherm\\Agritherm\\Agritherm_data\\temperature_model.h5")
