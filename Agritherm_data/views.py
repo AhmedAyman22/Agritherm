@@ -63,6 +63,7 @@ class ChatBotView(APIView):
         temperature_model = tf.keras.models.load_model("Z:\\Agritherm\\Agritherm\\Agritherm_data\\temperature_model.h5")
         pests_model = tf.keras.models.load_model("Z:\\Agritherm\\Agritherm\\Agritherm_data\\pests_model.h5")
         loaded_model = joblib.load('Z:\\Agritherm\\Agritherm\\Agritherm_data\\Yield_Model.pkl')
+        
 
 
 
@@ -94,19 +95,6 @@ class ChatBotView(APIView):
         f"Ensure proper pest management for {crop} to prevent damage from pests like {', '.join(pests[crop])}.",
         f"Protect your {crop} from common pests like {', '.join(pests[crop])} through effective pest control measures."
     ])
-        data_arr = []            
-        if 'yield' in user_input.lower() or 'crops' in user_input.lower() or 'yields' in user_input.lower() or 'crop' in user_input.lower():
-            print("Sure! Please provide the following information for crop prediction:\n 1. Yield (hg/ha)\n 2. Average rainfall (mm per year)\n 3. Pesticides (in tonnes)\n 4. Average temperature (in °C)\n")
-            hg_ha = eval(input('hg/ha = '))
-            avg_rain = eval(input('Average Rain = '))
-            pests_tonne = float(input('Pests Tone = '))
-            avg_temp = float(input('Average temp = '))
-
-            data_arr = [[hg_ha, avg_rain, pests_tonne, avg_temp]]
-            # Make predictions using the loaded model
-            prediction = loaded_model.predict(data_arr)
-            # Format the response with the crop prediction
-            crop_response = f"The predicted crop based on the given inputs is {prediction}."
         
         intents = data1["intents"]   
         for intent in intents:
@@ -175,7 +163,7 @@ class ChatBotView(APIView):
             else:
                 temperature_response = f"Data not available for {city} on {date}."
 
-        # Combine temperature range , pests , temperature , yield responses 
+        # Combine temperature range , pests , temperature , yield responses
         response = ""
         if pests_response:
             response += pests_response
@@ -185,20 +173,72 @@ class ChatBotView(APIView):
             response += temperature_response
         if crop_response:
             response += crop_response
-        if response == "" and intents_response is not None:  
-            response = intents_response    
-
+        if response == "" and intents_response is not None:
+            response = intents_response
+            
         return response
+    def crop_predictor(self, hg_ha, avg_rain, pests_tonne, avg_temp):
+        data_arr = []
+            
+        hg_ha = eval(hg_ha)
+        avg_rain = eval(avg_rain)
+        pests_tonne = float(pests_tonne)
+        avg_temp = float(avg_temp)
+
+        data_arr = [[hg_ha, avg_rain, pests_tonne, avg_temp]]
+        # Make predictions using the loaded model
+        prediction = loaded_model.predict(data_arr)
+        prediction = str(prediction[0])
+        # Format the response with the crop prediction
+        crop = prediction.split(',')[0]
+        try:
+            soil = prediction.split(',')[1]
+            crop_response = f"The predicted crop based on the given inputs is {crop} and the most suitable soil type for it is{soil}."
+        except IndexError as e:
+            crop_response = f"The predicted crop based on the given inputs is {crop}"
+
+        return crop_response
+    def extract_values(self, user_input):
+        # Convert the user input to lowercase for case-insensitive matching
+        user_input = user_input.lower()
+        values = {}
+        # check for digits in the input and assign them to each variable respectively 
+        extracted_values = re.findall(r'\d+(?:\.\d+)?', user_input)
+        hg_ha = extracted_values[0]
+        avg_rain = extracted_values[1]
+        pests_tonne = extracted_values[2]
+        avg_temp = extracted_values[3]
+
+        return hg_ha, avg_rain, pests_tonne, avg_temp
+
     
     def post(self, request):
+        crops_syn = ['crop', 'crops', 'plant', 'plants']
         prompt_text = request.data.get("entry") # Extract the prompt text from the request data
-        self.handler(prompt_text) 
-        response_text = self.generate_response(prompt_text)
-        #prompt = Prompt.objects.create(prompt=prompt_text)  # Create a new Prompt instance
-        #response = Response.objects.create(response=response_text)  # Create a new Response instance
-        response_data = {"response": response_text}
-        json_response = json.dumps(response_data)
-        return HttpResponse(json_response, content_type="application/json")  # Return a Response object with the response text
+        self.handler(prompt_text)
+        if prompt_text.lower() in crops_syn:
+            return HttpResponse('''I understand that you want me to predict suitable crops to be planted, to do this please give me the following information in the same format!
+            \n 1. Yield in (hg/ha)\n 2. Average rainfall in (mm per year)\n 3. Pesticides in (tonnes)\n 4. Average temperature in (°C)\n''', content_type="application/json")
+        if 'yield' in prompt_text.lower():
+            values = self.extract_values(prompt_text)
+            hg_ha = values[0]
+            avg_rain = values[1]
+            pests_tonne = values[2]
+            avg_temp = values[3]
+            
+            response_text = self.crop_predictor(hg_ha, avg_rain, pests_tonne, avg_temp)
+            response_data = {"response": response_text}
+            json_response = json.dumps(response_data)
+            return HttpResponse(json_response, content_type="application/json")
+        else:
+            self.handler(prompt_text)
+            response_text = self.generate_response(prompt_text)
+            #prompt = Prompt.objects.create(prompt=prompt_text)  # Create a new Prompt instance
+            #response = Response.objects.create(response=response_text)  # Create a new Response instance
+            response_data = {"response": response_text}
+            json_response = json.dumps(response_data)
+            return HttpResponse(json_response, content_type="application/json")  # Return a Response object with the response text
+        
         
     def get(self, request):
         # Handle GET requests if required
