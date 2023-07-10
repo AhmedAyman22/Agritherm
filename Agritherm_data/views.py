@@ -42,7 +42,7 @@ class cityView(APIView):
 
 class ChatBotView(APIView):
     def handler(self, user_input):
-        global data1,temperature_data,pests_data,cities,dates,temperature_model,pests_model,loaded_model
+        global data1,temperature_data,pests_data,cities,dates,temperature_model,pests_model,loaded_model,label_mapping
         with open("Z:\\Agritherm\\Agritherm\\Agritherm_data\\temp_data.json") as file:
             temperature_data = json.load(file)
 
