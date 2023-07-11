@@ -17,8 +17,8 @@
       },
       {
         "tag": "help",
-        "patterns": ["Help me", "I need assistance", "Can you help?", "What can you do?", "What is your purpose?", "How can you assist?"],
-        "responses": ["I can help you with several things. I can generate pests and temperature range information for different crops.Additionally, I can provide current weather updates and generate alerts for heatwaves. How can I assist you today?"]
+        "patterns": ["Help me", "I need assistance", "Can you help", "What can you do", "What is your purpose", "How can you assist"],
+        "responses": ["I can help you with several things. I can generate pest awareness, temperature range information for different crops and yield suggestions suitable for your environment.Additionally, current weather updates and generate alerts for heatwaves. How can I assist you today?"]
       },
       {
         "tag": "unknown",
@@ -27,4 +27,3 @@
       }
     ]
   }
-  
