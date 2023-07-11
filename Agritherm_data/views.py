@@ -73,33 +73,31 @@ class ChatBotView(APIView):
         pests_response = ""
         temperature_response = ""
         crop_response = ""
-        intents_response=None
+        intents_response= None
 
         crops = [item['crop'] for item in pests_data]
         pests = {item['crop']: item['pests'] for item in pests_data}
         temperature_ranges = {item['crop']: item['temperature_range'] for item in pests_data}
 
         # Check if user input asks for temperature range
-        if "temperature range" in user_input.lower():
+        if "temperature range" in user_input.lower() or "temp range" in user_input.lower() or "temperature" in user_input.lower() or "temperatures" in user_input.lower():
             for crop in crops:
                 if crop.lower() in user_input.lower():
                     temperature_range_response += random.choice([
         f"The recommended temperature range for {crop} is {temperature_ranges[crop]}.",
         f"Optimal temperature range for {crop} growth is {temperature_ranges[crop]}.",
         f"{crop} thrives in temperatures ranging from {temperature_ranges[crop]}.",
-        f"{crop} requires a temperature range of {temperature_ranges[crop]} for optimal development."
-    ])
+        f"{crop} requires a temperature range of {temperature_ranges[crop]} for optimal development."])
 
-        # Check if user input asks for pests
-        if "pests" in user_input.lower():
+         # Check if user input asks for pests
+        if "pests" in user_input.lower() or "pest" in user_input.lower() or "pesticides" in user_input.lower():
             for crop in crops:
                 if crop.lower() in user_input.lower():
                     pests_response += random.choice([
         f"Common pests that affect {crop} include {', '.join(pests[crop])}.",
         f"{crop} is prone to infestations by pests such as {', '.join(pests[crop])}.",
         f"Ensure proper pest management for {crop} to prevent damage from pests like {', '.join(pests[crop])}.",
-        f"Protect your {crop} from common pests like {', '.join(pests[crop])} through effective pest control measures."
-    ])
+        f"Protect your {crop} from common pests like {', '.join(pests[crop])} through effective pest control measures."])
 
         intents = data1["intents"]
         for intent in intents:
@@ -120,10 +118,32 @@ class ChatBotView(APIView):
                 city = c
                 break
 
-        for d in dates:
-            if d in user_input:
-                date = d
-                break
+        date_pattern = r"\b(\d{1,2}[-/]\d{1,2}[-/]\d{4}|\d{4}/\d{2}/\d{2})\b"
+        date_match = re.search(date_pattern, user_input)
+        if date_match:
+            date = date_match.group(0)
+        else:
+            for d in dates:
+                if d in user_input:
+                    date = d
+                    break
+
+        
+            
+        # Check if date format matches and convert if necessary
+        if date:
+            user_date = None
+            for fmt in ['%Y-%m-%d', '%d-%m-%Y' , '%Y/%m/%d','%d/%m/%Y']:
+                try:
+                    user_date = datetime.strptime(date, fmt).date()
+                    break
+                except ValueError:
+                    pass
+            if user_date:
+                # Convert date to desired format (YYYY-MM-DD)
+                date = user_date.strftime('%Y-%m-%d')
+        
+        
         else:
             #Check if date keywords are mentioned
             today = datetime.now().strftime("%Y-%m-%d")
@@ -135,7 +155,7 @@ class ChatBotView(APIView):
             elif "tomorrow" in user_input.lower():
                 date = tomorrow
 
-            # Set the default date to today if not provided
+            #Set the default date to today if not provided
             if not date:
                 date = today
 
